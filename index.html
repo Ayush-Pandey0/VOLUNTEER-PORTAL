@@ -3,252 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Volunteer Portal</title>
+    <title>Admin Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            z-index: 50;
-            background: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .message.error {
-            color: #dc2626;
-            border-left: 4px solid #dc2626;
-        }
-        .message.success {
-            color: #16a34a;
-            border-left: 4px solid #16a34a;
-        }
-        .message.warning {
-            color: #d97706;
-            border-left: 4px solid #f59e0b;
-        }
-        /* Improved toggle switch styles */
-        .role-toggle-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 0.5rem;
-        }
-        .role-toggle {
-            position: relative;
-            display: inline-block;
-            width: 200px;
-            height: 40px;
-            background-color: #e5e7eb;
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .role-toggle-slider {
-            position: absolute;
-            height: 34px;
-            width: 95px;
-            border-radius: 17px;
-            background-color: #3b82f6;
-            top: 3px;
-            left: 3px;
-            transition: transform 0.3s ease;
-            z-index: 1;
-        }
-        .role-toggle.admin .role-toggle-slider {
-            transform: translateX(99px);
-        }
-        .role-toggle-labels {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-            padding: 0 15px;
-            z-index: 2;
-        }
-        .role-toggle-label {
-            font-weight: 600;
-            transition: color 0.3s ease;
-            padding: 0 15px;
-            font-size: 14px;
-        }
-        .role-toggle-label.user {
-            color: white;
-        }
-        .role-toggle-label.admin {
-            color: #6b7280;
-        }
-        .role-toggle.admin .role-toggle-label.user {
-            color: #6b7280;
-        }
-        .role-toggle.admin .role-toggle-label.admin {
-            color: white;
-        }
-        #signupSuggestion {
-            display: none;
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            background-color: #f0f9ff;
-            border: 1px solid #bae6fd;
-        }
-    </style>
 </head>
-<body class="min-h-screen bg-gray-100">
-    <div id="message" class="message hidden"></div>
-
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-            <div class="text-center">
-                <h1 class="text-3xl font-bold text-gray-800">Volunteer Portal</h1>
-                <p class="mt-2 text-gray-600">Sign in to your account</p>
-            </div>
-            <form id="loginForm" class="mt-8 space-y-6">
-                <div class="rounded-md shadow-sm space-y-4">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                        <div class="mt-1">
-                            <input id="email" name="email" type="email" required 
-                                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <div class="mt-1">
-                            <input id="password" name="password" type="password" required 
-                                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Login as</label>
-                        <div class="role-toggle-container">
-                            <div id="roleToggle" class="role-toggle">
-                                <div class="role-toggle-slider"></div>
-                                <div class="role-toggle-labels">
-                                    <span class="role-toggle-label user">User</span>
-                                    <span class="role-toggle-label admin">Admin</span>
-                                </div>
-                                <input type="hidden" id="roleInput" name="role" value="user">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="signupSuggestion" class="text-sm">
-                    <p class="font-medium text-blue-700 mb-2">
-                        <i class="fas fa-info-circle mr-2"></i>Account not found
-                    </p>
-                    <p class="text-gray-600 mb-2">No account exists with this email address.</p>
-                    <a href="register.html" class="inline-block mt-1 bg-blue-100 hover:bg-blue-200 text-blue-700 py-2 px-4 rounded-lg transition-colors">
-                        <i class="fas fa-user-plus mr-2"></i>Sign up now
-                    </a>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember" name="remember" type="checkbox" 
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
-                    </div>
-                    <div class="text-sm">
-                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Forgot your password?</a>
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit" 
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Sign in
-                    </button>
-                </div>
-            </form>
-            <div class="text-center">
-                <p class="text-sm text-gray-600">
-                    Don't have an account? 
-                    <a href="register.html" class="font-medium text-blue-600 hover:text-blue-500">Register here</a>
-                </p>
-            </div>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Admin Portal</h1>
+        
+        <p class="text-gray-700 mb-4">Welcome to the admin portal. This is a failsafe page.</p>
+        
+        <div class="space-y-4">
+            <a href="admin-dashboard.html" class="block w-full bg-blue-600 text-white py-2 px-4 rounded-md text-center hover:bg-blue-700">
+                Go to Admin Dashboard
+            </a>
+            
+            <a href="../index.html" class="block w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md text-center hover:bg-gray-300">
+                Return to Login
+            </a>
+        </div>
+        
+        <div class="mt-8 p-4 bg-yellow-50 rounded-md border border-yellow-200">
+            <h2 class="font-semibold text-yellow-800 mb-2">Troubleshooting Information</h2>
+            <p class="text-yellow-700 text-sm">
+                If you're seeing this page instead of being automatically redirected to the admin dashboard, 
+                there might be an issue with the file paths or server configuration.
+            </p>
+            <ul class="text-sm text-yellow-700 mt-2 list-disc pl-5">
+                <li>Try clicking the "Go to Admin Dashboard" button above</li>
+                <li>Make sure all PHP files are properly configured</li>
+                <li>Check server logs for any errors</li>
+            </ul>
         </div>
     </div>
-
+    
     <script>
-        // Improved role toggle functionality
-        const roleToggle = document.getElementById('roleToggle');
-        const roleInput = document.getElementById('roleInput');
-        const signupSuggestion = document.getElementById('signupSuggestion');
-        
-        roleToggle.addEventListener('click', function() {
-            this.classList.toggle('admin');
-            roleInput.value = this.classList.contains('admin') ? 'admin' : 'user';
-            signupSuggestion.style.display = 'none'; // Hide suggestions when switching roles
-        });
-        
-        // Show message
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = message;
-            messageDiv.className = `message ${type}`;
-            messageDiv.classList.remove('hidden');
-            
-            setTimeout(() => {
-                messageDiv.classList.add('hidden');
-            }, 5000);
-        }
-
-        // Reset the form and hide signup suggestion
-        function resetForm() {
-            signupSuggestion.style.display = 'none';
-        }
-
-        // Handle form input changes
-        document.getElementById('email').addEventListener('input', resetForm);
-        document.getElementById('password').addEventListener('input', resetForm);
-
-        // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
-            const role = document.getElementById('roleInput').value;
-
-            try {
-                const response = await fetch('includes/auth.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password,
-                        remember,
-                        role
-                    })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showMessage('Login successful. Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = data.redirect;
-                    }, 1000);
-                } else {
-                    // Handle different error cases
-                    if (data.should_register) {
-                        signupSuggestion.style.display = 'block';
-                    } else {
-                        signupSuggestion.style.display = 'none';
-                    }
-                    throw new Error(data.message);
-                }
-            } catch (error) {
-                showMessage(error.message, 'error');
-            }
-        });
+        // This script will show directory contents to help diagnose path issues
+        fetch('test.php')
+            .then(response => response.text())
+            .then(data => {
+                console.log('Admin directory test results:', data);
+            })
+            .catch(err => {
+                console.error('Error testing admin directory:', err);
+            });
     </script>
 </body>
-</html>
+</html> 
